@@ -18,8 +18,6 @@ public:
 	void initTexture();
 	void initSprite();
 
-	void playMenuMusic();
-	void stopMenuMusic();
 
 private:
 	int selectedItemIndex;
@@ -29,5 +27,11 @@ private:
 	sf::Texture backgroundTexture;
 	sf::Sprite backgroundSprite;
 	sf::Music menuMusic;
+	sf::IntRect currentFrame;
+	sf::Clock clock;
+
+	sf::Text texttest;
+
+	void initAnimation();
 
 };

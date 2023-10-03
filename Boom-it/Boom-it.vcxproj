@@ -137,6 +137,7 @@
     <ClCompile Include="Boom-it.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="HeartBar.cpp" />
+    <ClCompile Include="LogIn.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
@@ -144,6 +145,7 @@
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="HeartBar.h" />
+    <ClInclude Include="LogIn.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>

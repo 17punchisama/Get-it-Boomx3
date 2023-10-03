@@ -62,7 +62,7 @@ bool Player::checkCollision(const Bomb& bomb)
 
 void Player::initVariable()
 {
-	this->movementSpeed = 1.f;
+	this->movementSpeed = 2.f;
 	this->animationState = PLAYER_ANIMATION_STATES::IDLE;
 	this->previousPosition = this->sprite.getPosition();
 }

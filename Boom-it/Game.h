@@ -12,7 +12,6 @@ enum class GameState {
     LogIn,
     Tutorial,
     Playing,
-    // เพิ่มสถานะอื่น ๆ ตามที่คุณต้องการ
 };
 
 

@@ -15,7 +15,7 @@ void Game::initVariables()
 
 void Game::initWindow()
 {
-    this->texture.loadFromFile("images/bg-test.png");
+    this->texture.loadFromFile("images/bg.JPEG");
     this->sprite.setTexture(texture);
 
     sf::VideoMode videoMode(1920, 1080);
