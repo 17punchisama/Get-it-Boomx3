@@ -12,15 +12,17 @@ public:
 	MainMenu(float width, float height);
 	~MainMenu();
 
+	int selectedItemIndex;
+
 	void draw(sf::RenderWindow& window);
-	void MoveUp();
-	void MoveDown();
 	void initTexture();
 	void initSprite();
+	void updateMouseInput(sf::RenderWindow& window);
+	void handleMouseClick(int selectedItemIndex);
 
+	std::string getMenuState() const;
 
 private:
-	int selectedItemIndex;
 	sf::Font font;
 	sf::Text menu[MAX_NUMBER_OF_ITEMS];
 
@@ -29,9 +31,11 @@ private:
 	sf::Music menuMusic;
 	sf::IntRect currentFrame;
 	sf::Clock clock;
+	sf::Event event;
 
-	sf::Text texttest;
+	sf::RenderWindow* menuwindow;
+	sf::Vector2i mousePosition;
 
 	void initAnimation();
-
+	std::string menuState;
 };

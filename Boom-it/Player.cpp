@@ -56,10 +56,6 @@ bool Player::checkCollision(const Bomb& bomb)
 }
 
 
-
-
-
-
 void Player::initVariable()
 {
 	this->movementSpeed = 2.f;
@@ -72,8 +68,8 @@ void Player::initShape()
 	//edit player character after this !!
 	this->texture.loadFromFile("images/Player-Choerry.png");
 	this->sprite.setTexture(texture);
-	this->currentFrame = sf::IntRect(50, 100, 50, 100);
-	this->sprite.setTextureRect(currentFrame);
+	this->currentFrame = sf::IntRect(0, 100, 50, 100);
+	this->sprite.setPosition(100, 100);
 }
 
 void Player::initAnimations()

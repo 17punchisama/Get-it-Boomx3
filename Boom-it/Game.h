@@ -2,16 +2,19 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <iostream>
 #include "Player.h"
 #include "Bomb.h"
 #include "HeartBar.h"
 #include "MainMenu.h"
+#include "LogIn.h"
 
 enum class GameState {
     MainMenu,
     LogIn,
-    Tutorial,
     Playing,
+    Scoreboard,
+    About,
 };
 
 
@@ -35,15 +38,20 @@ private:
     HeartBar heartBar;
     MainMenu mainMenu;
     GameState gameState;
+    LogIn login;
 
-    void changeGameState(GameState newState);
     void initVariables();
     void initWindow();
     void initTextures();
     void updateMainMenu();
     void updatePlaying();
+    void updateLogIn();
     void renderMainMenu();
     void renderPlaying();
+    void renderLogIn();
+
+    int selectedItemIndex;
+    std::string clickedMenuState;
 
 public:
     Game();
@@ -54,4 +62,6 @@ public:
     void update();
     void render();
     void initInput();
+
+    void changeGameState(GameState newState);
 };

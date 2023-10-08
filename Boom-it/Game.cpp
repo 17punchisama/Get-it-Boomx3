@@ -41,7 +41,6 @@ Game::Game()
 {
     this->initVariables();
     this->initWindow();
-    this->initTextures();
 }
 
 Game::~Game()
@@ -104,6 +103,23 @@ void Game::pollEvents()
 void Game::updateMainMenu()
 {
     // Update and render the Main Menu
+    mainMenu.updateMouseInput(window);
+
+    clickedMenuState = mainMenu.getMenuState();
+
+    if (clickedMenuState == "Playing")
+    {
+        //std::cout << "Playing rendering" << std::endl;
+        gameState = GameState::LogIn;
+    }
+    if (clickedMenuState == "Scoreboard")
+    {
+        gameState = GameState::Scoreboard;
+    }
+    if (clickedMenuState == "About")
+    {
+        gameState = GameState::About;
+    }
     mainMenu.draw(window);
     window.display();
 }
@@ -156,6 +172,19 @@ void Game::updatePlaying()
     window.display();
 }
 
+void Game::updateLogIn()
+{
+    login.updateMouseInput(window);
+
+    if (login.checkState == "next")
+    {
+        gameState = GameState::Playing;
+    }
+
+    login.draw(window);
+    window.display();
+}
+
 void Game::update()
 {
     this->pollEvents();
@@ -167,6 +196,9 @@ void Game::update()
         break;
     case GameState::Playing:
         this->updatePlaying();
+        break;
+    case GameState::LogIn:
+        this->updateLogIn();
         break;
     }
 }
@@ -204,6 +236,12 @@ void Game::renderPlaying()
     window.display();
 }
 
+void Game::renderLogIn()
+{
+    login.draw(window);
+    window.display();
+}
+
 void Game::render()
 {
 
@@ -217,5 +255,7 @@ void Game::render()
     case GameState::Playing:
         this->renderPlaying();
         break;
+    case GameState::LogIn:
+        this->renderLogIn();
     }
 }
