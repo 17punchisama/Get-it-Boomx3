@@ -8,6 +8,7 @@
 #include "HeartBar.h"
 #include "MainMenu.h"
 #include "LogIn.h"
+#include "About.h"
 
 enum class GameState {
     MainMenu,
@@ -39,16 +40,21 @@ private:
     MainMenu mainMenu;
     GameState gameState;
     LogIn login;
+    About about;
 
     void initVariables();
     void initWindow();
     void initTextures();
+
     void updateMainMenu();
     void updatePlaying();
     void updateLogIn();
+    void updateAbout();
+
     void renderMainMenu();
     void renderPlaying();
     void renderLogIn();
+    void renderAbout();
 
     int selectedItemIndex;
     std::string clickedMenuState;

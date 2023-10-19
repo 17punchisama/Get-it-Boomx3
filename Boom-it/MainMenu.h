@@ -9,7 +9,7 @@ class MainMenu
 {
 public:
 	MainMenu();
-	MainMenu(float width, float height);
+	//MainMenu(float width, float height);
 	~MainMenu();
 
 	int selectedItemIndex;
@@ -20,7 +20,8 @@ public:
 	void updateMouseInput(sf::RenderWindow& window);
 	void handleMouseClick(int selectedItemIndex);
 
-	std::string getMenuState() const;
+	std::string menuState;
+	//std::string getMenuState() const;
 
 private:
 	sf::Font font;
@@ -37,5 +38,5 @@ private:
 	sf::Vector2i mousePosition;
 
 	void initAnimation();
-	std::string menuState;
+	
 };

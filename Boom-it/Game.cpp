@@ -70,17 +70,17 @@ void Game::pollEvents()
                 // Check the player's animation state and place a bomb accordingly
                 switch (player.animationState) {
                 case PLAYER_ANIMATION_STATES::MOVING_LEFT:
-                    bombs.emplace_back(player.getPosition().x - 50, player.getPosition().y);
+                    bombs.emplace_back(player.getPosition().x - 70, player.getPosition().y);
                     isBombExploded = false;
                     canPlaceBomb = false;
                     break;
                 case PLAYER_ANIMATION_STATES::MOVING_RIGHT:
-                    bombs.emplace_back(player.getPosition().x + 50, player.getPosition().y);
+                    bombs.emplace_back(player.getPosition().x + 30, player.getPosition().y);
                     isBombExploded = false;
                     canPlaceBomb = false;
                     break;
                 case PLAYER_ANIMATION_STATES::MOVING_UP:
-                    bombs.emplace_back(player.getPosition().x - 15, player.getPosition().y - 70);
+                    bombs.emplace_back(player.getPosition().x - 15, player.getPosition().y - 100);
                     isBombExploded = false;
                     canPlaceBomb = false;
                     break;
@@ -89,10 +89,31 @@ void Game::pollEvents()
                     isBombExploded = false;
                     canPlaceBomb = false;
                     break;
-                default:
-                    bombs.emplace_back(player.getPosition().x, player.getPosition().y);
-                    isBombExploded = false;
-                    canPlaceBomb = false;
+                case PLAYER_ANIMATION_STATES::IDLE:
+                    if (player.previousState == "Left")
+                    {
+                        bombs.emplace_back(player.getPosition().x - 70, player.getPosition().y);
+                        isBombExploded = false;
+                        canPlaceBomb = false;
+                    }
+                    if (player.previousState == "Right")
+                    {
+                        bombs.emplace_back(player.getPosition().x + 30, player.getPosition().y);
+                        isBombExploded = false;
+                        canPlaceBomb = false;
+                    }
+                    if (player.previousState == "Up")
+                    {
+                        bombs.emplace_back(player.getPosition().x - 15, player.getPosition().y - 100);
+                        isBombExploded = false;
+                        canPlaceBomb = false;
+                    }
+                    if (player.previousState == "Down")
+                    {
+                        bombs.emplace_back(player.getPosition().x - 15, player.getPosition().y + 50);
+                        isBombExploded = false;
+                        canPlaceBomb = false;
+                    }
                     break;
                 }
             }
@@ -105,20 +126,23 @@ void Game::updateMainMenu()
     // Update and render the Main Menu
     mainMenu.updateMouseInput(window);
 
-    clickedMenuState = mainMenu.getMenuState();
+    clickedMenuState = mainMenu.menuState;
 
     if (clickedMenuState == "Playing")
     {
         //std::cout << "Playing rendering" << std::endl;
         gameState = GameState::LogIn;
+        mainMenu.menuState = "";
     }
     if (clickedMenuState == "Scoreboard")
     {
         gameState = GameState::Scoreboard;
+        mainMenu.menuState = "";
     }
     if (clickedMenuState == "About")
     {
         gameState = GameState::About;
+        mainMenu.menuState = "";
     }
     mainMenu.draw(window);
     window.display();
@@ -179,9 +203,29 @@ void Game::updateLogIn()
     if (login.checkState == "next")
     {
         gameState = GameState::Playing;
+        login.checkState = "";
+    }
+    if (login.checkState == "back")
+    {
+        gameState = GameState::MainMenu;
+        login.checkState = "";
     }
 
     login.draw(window);
+    window.display();
+}
+
+void Game::updateAbout()
+{
+    about.updateMouseInput(window);
+
+    if (about.checkState == "Home")
+    {
+        gameState = GameState::MainMenu;
+        mainMenu.menuState = "";
+    }
+
+    about.draw(window);
     window.display();
 }
 
@@ -190,9 +234,28 @@ void Game::update()
     this->pollEvents();
 
     // Check the game state and perform actions accordingly
-    switch (gameState) {
+    if (gameState == GameState::MainMenu)
+    {
+        this->updateMainMenu();
+        //std::cout << 1 << std::endl;
+    }
+    else if (gameState == GameState::Playing)
+    {
+        this->updatePlaying();
+    }
+    else if (gameState == GameState::LogIn)
+    {
+        this->updateLogIn();
+    }
+    else if (gameState == GameState::About)
+    {
+        this->updateAbout();
+        //std::cout << 2 << std::endl;
+    }
+    /*switch (gameState) {
     case GameState::MainMenu:
         this->updateMainMenu();
+        std::cout << 1 << std::endl;
         break;
     case GameState::Playing:
         this->updatePlaying();
@@ -200,12 +263,17 @@ void Game::update()
     case GameState::LogIn:
         this->updateLogIn();
         break;
-    }
+    case GameState::About:
+        this->updateAbout();
+        std::cout << 2 << std::endl;
+        break;
+    }*/
 }
 
 void Game::renderMainMenu()
 {
     // Render the Main Menu
+    //window.clear();
     mainMenu.draw(window);
     window.display();
 }
@@ -242,13 +310,37 @@ void Game::renderLogIn()
     window.display();
 }
 
+void Game::renderAbout()
+{
+    //window.clear();
+    about.draw(window);
+    window.display();
+}
+
 void Game::render()
 {
 
     window.clear();
 
+    if (gameState == GameState::MainMenu)
+    {
+        this->renderMainMenu();
+       // std::cout << 1 << std::endl;
+    }
+    else if (gameState == GameState::Playing)
+    {
+        this->renderPlaying();
+    }
+    else if (gameState == GameState::LogIn)
+    {
+        this->renderLogIn();
+    }
+    else if (gameState == GameState::About)
+    {
+        this->renderAbout();
+    }
     // Check the game state and choose the appropriate rendering function
-    switch (gameState) {
+    /*switch (gameState) {
     case GameState::MainMenu:
         this->renderMainMenu();
         break;
@@ -257,5 +349,9 @@ void Game::render()
         break;
     case GameState::LogIn:
         this->renderLogIn();
-    }
+        break;
+    case GameState::About :
+        this->renderAbout();
+        break;
+    }*/
 }

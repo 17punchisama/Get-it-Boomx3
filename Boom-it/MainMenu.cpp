@@ -133,8 +133,3 @@ void MainMenu::handleMouseClick(int selectedItemIndex)
 
 	}
 }
-
-std::string MainMenu::getMenuState() const
-{
-	return menuState;
-}

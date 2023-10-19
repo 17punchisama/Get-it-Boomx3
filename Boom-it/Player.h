@@ -54,5 +54,7 @@ public:
 	void updateWindowBoundsCollision(const sf::RenderTarget* target);
 	void update(const sf::RenderTarget* target);
 	void render(sf::RenderTarget* target);
+	std::string previousState;
+
 	sf::Vector2f getPosition() const;
 };

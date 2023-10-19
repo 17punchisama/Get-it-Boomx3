@@ -3,25 +3,17 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-class LogIn
+class About
 {
 private:
+	sf::Text Text;
 	sf::Font font;
-	sf::Text nextState;
-	sf::Text backState;
-
-	sf::Texture backgroundTexture;
-	sf::Sprite backgroundSprite;
 
 	sf::Vector2i mousePosition;
-
-	void initTexture();
-	void initSprite();
-	void handleMouseClick();
 	
 public:
-	LogIn();
-	~LogIn();
+	About();
+	~About();
 
 	void draw(sf::RenderWindow& window);
 	void updateMouseInput(sf::RenderWindow& window);

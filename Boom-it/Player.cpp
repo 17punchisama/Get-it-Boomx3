@@ -177,21 +177,25 @@ void Player::updateInput()
 	{
 		this->sprite.move(-this->movementSpeed, 0.f);
 		this->animationState = PLAYER_ANIMATION_STATES::MOVING_LEFT;
+		this->previousState = "Left";
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
 		this->sprite.move(this->movementSpeed, 0.f);
 		this->animationState = PLAYER_ANIMATION_STATES::MOVING_RIGHT;
+		this->previousState = "Right";
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
 		this->sprite.move(0.f, -this->movementSpeed);
 		this->animationState = PLAYER_ANIMATION_STATES::MOVING_UP;
+		this->previousState = "Up";
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
 		this->sprite.move(0.f, this->movementSpeed);
 		this->animationState = PLAYER_ANIMATION_STATES::MOVING_DOWN;
+		this->previousState = "Down";
 	}
 
 }
