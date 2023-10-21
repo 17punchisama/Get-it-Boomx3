@@ -10,15 +10,7 @@ MainMenu::MainMenu()
 		std::cout << "Failed to load font" << std::endl;
 	}
 
-	if (!menuMusic.openFromFile("sounds/odd-front.mp3"))
-	{
-		std::cout << "Failed to load music" << std::endl;
-	}
-	else
-	{
-		menuMusic.setLoop(true);
-		menuMusic.play();
-	}
+	
 
 	this->menu[0].setFont(this->font);
 	this->menu[0].setFillColor(sf::Color::White);

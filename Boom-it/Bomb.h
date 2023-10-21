@@ -22,7 +22,7 @@ private:
 	sf::IntRect currentFrame;
 	sf::IntRect bombFrame;
 
-	float explosionTine;
+	float explosionTime;
 
 	bool exploded;
 

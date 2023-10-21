@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <vector>
 #include <iostream>
 #include "Player.h"
@@ -42,6 +43,7 @@ private:
     LogIn login;
     About about;
 
+    sf::Music menuMusic;
     void initVariables();
     void initWindow();
     void initTextures();

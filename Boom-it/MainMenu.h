@@ -12,6 +12,7 @@ public:
 	//MainMenu(float width, float height);
 	~MainMenu();
 
+	
 	int selectedItemIndex;
 
 	void draw(sf::RenderWindow& window);
@@ -29,7 +30,7 @@ private:
 
 	sf::Texture backgroundTexture;
 	sf::Sprite backgroundSprite;
-	sf::Music menuMusic;
+	
 	sf::IntRect currentFrame;
 	sf::Clock clock;
 	sf::Event event;

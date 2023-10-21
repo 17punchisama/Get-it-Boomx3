@@ -11,6 +11,8 @@ void Game::initVariables()
     this->canPlaceBomb = true;
     this->isBombExploded = false;
     this->gameState = GameState::MainMenu;
+
+
 }
 
 void Game::initWindow()
@@ -41,6 +43,11 @@ Game::Game()
 {
     this->initVariables();
     this->initWindow();
+    if (!menuMusic.openFromFile("sounds/odd-front.mp3"))
+    {
+        std::cout << "Failed to load music" << std::endl;
+    }
+
 }
 
 Game::~Game()
@@ -237,37 +244,28 @@ void Game::update()
     if (gameState == GameState::MainMenu)
     {
         this->updateMainMenu();
+        
         //std::cout << 1 << std::endl;
     }
-    else if (gameState == GameState::Playing)
+    if (gameState == GameState::Playing)
     {
         this->updatePlaying();
+        this->menuMusic.stop();
     }
-    else if (gameState == GameState::LogIn)
+    if (gameState == GameState::LogIn)
     {
         this->updateLogIn();
     }
-    else if (gameState == GameState::About)
+    if (gameState == GameState::About)
     {
         this->updateAbout();
         //std::cout << 2 << std::endl;
     }
-    /*switch (gameState) {
-    case GameState::MainMenu:
-        this->updateMainMenu();
-        std::cout << 1 << std::endl;
-        break;
-    case GameState::Playing:
-        this->updatePlaying();
-        break;
-    case GameState::LogIn:
-        this->updateLogIn();
-        break;
-    case GameState::About:
-        this->updateAbout();
-        std::cout << 2 << std::endl;
-        break;
-    }*/
+    
+    if (gameState == GameState::About || gameState == GameState::Scoreboard || gameState == GameState::MainMenu || gameState == GameState::LogIn)
+    {
+        this->menuMusic.play();
+    }
 }
 
 void Game::renderMainMenu()
@@ -340,18 +338,5 @@ void Game::render()
         this->renderAbout();
     }
     // Check the game state and choose the appropriate rendering function
-    /*switch (gameState) {
-    case GameState::MainMenu:
-        this->renderMainMenu();
-        break;
-    case GameState::Playing:
-        this->renderPlaying();
-        break;
-    case GameState::LogIn:
-        this->renderLogIn();
-        break;
-    case GameState::About :
-        this->renderAbout();
-        break;
-    }*/
+
 }
