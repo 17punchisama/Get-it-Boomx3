@@ -43,11 +43,12 @@ Bomb::Bomb(float x, float y)
     
     this->sprite.setPosition(x + 20, y + 50);
     exploded = false;
+    this->updateBombAnimation();
 }
 
 Bomb::Bomb()
 {
-    this->updateBombAnimation();
+    //
 }
 
 Bomb::~Bomb()
@@ -86,6 +87,7 @@ void Bomb::update()
             exploded = true;
             this->initTextureEffect();
             this->initSpriteEffect();
+            this->updateBombAnimation();
         }
         else
         {

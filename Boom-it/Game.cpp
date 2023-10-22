@@ -236,6 +236,18 @@ void Game::updateAbout()
     window.display();
 }
 
+void Game::updateScoreboard()
+{
+    scoreboard.updateMouseInput(window);
+
+    if (scoreboard.checkState == "Home")
+    {
+        gameState = GameState::MainMenu;
+    }
+    scoreboard.draw(window);
+    window.display();
+}
+
 void Game::update()
 {
     this->pollEvents();
@@ -260,6 +272,10 @@ void Game::update()
     {
         this->updateAbout();
         //std::cout << 2 << std::endl;
+    }
+    if (gameState == GameState::Scoreboard)
+    {
+        this->updateScoreboard();
     }
     
     if (gameState == GameState::About || gameState == GameState::Scoreboard || gameState == GameState::MainMenu || gameState == GameState::LogIn)
@@ -315,6 +331,12 @@ void Game::renderAbout()
     window.display();
 }
 
+void Game::renderScoreboard()
+{
+    scoreboard.draw(window);
+    window.display();
+}
+
 void Game::render()
 {
 
@@ -336,6 +358,10 @@ void Game::render()
     else if (gameState == GameState::About)
     {
         this->renderAbout();
+    }
+    else if (gameState == GameState::Scoreboard)
+    {
+        this->renderScoreboard();
     }
     // Check the game state and choose the appropriate rendering function
 

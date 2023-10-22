@@ -10,6 +10,7 @@
 #include "MainMenu.h"
 #include "LogIn.h"
 #include "About.h"
+#include "Scoreboard.h"
 
 enum class GameState {
     MainMenu,
@@ -42,6 +43,7 @@ private:
     GameState gameState;
     LogIn login;
     About about;
+    Scoreboard scoreboard;
 
     sf::Music menuMusic;
     void initVariables();
@@ -52,11 +54,13 @@ private:
     void updatePlaying();
     void updateLogIn();
     void updateAbout();
+    void updateScoreboard();
 
     void renderMainMenu();
     void renderPlaying();
     void renderLogIn();
     void renderAbout();
+    void renderScoreboard();
 
     int selectedItemIndex;
     std::string clickedMenuState;
