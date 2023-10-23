@@ -1,66 +1,13 @@
 ﻿#include "Player.h"
 
-
-bool Player::checkCollision(const Bomb& bomb)
-{
-	sf::FloatRect playerBounds = this->sprite.getGlobalBounds();
-	sf::FloatRect bombBounds = bomb.getGlobalBounds();
-
-	if (playerBounds.intersects(bombBounds))
-	{
-		sf::Vector2f newPosition = this->sprite.getPosition();
-
-		// Calculate the horizontal and vertical overlap
-		float xOverlap = std::min(playerBounds.left + playerBounds.width, bombBounds.left + bombBounds.width) -
-			std::max(playerBounds.left, bombBounds.left);
-		float yOverlap = std::min(playerBounds.top + playerBounds.height, bombBounds.top + bombBounds.height) -
-			std::max(playerBounds.top, bombBounds.top);
-
-		// Adjust the position based on the overlap
-		if (xOverlap < yOverlap)
-		{
-			// Horizontal overlap is smaller, adjust horizontally
-			if (playerBounds.left < bombBounds.left)
-			{
-				// Character is to the left of the bomb, place at the left edge
-				newPosition.x = bombBounds.left - playerBounds.width;
-			}
-			else
-			{
-				// Character is to the right of the bomb, place at the right edge
-				newPosition.x = bombBounds.left + bombBounds.width;
-			}
-		}
-		else
-		{
-			// Vertical overlap is smaller or equal, adjust vertically
-			if (playerBounds.top < bombBounds.top)
-			{
-				// Character is above the bomb, place at the top edge
-				newPosition.y = bombBounds.top - playerBounds.height;
-			}
-			else
-			{
-				// Character is below the bomb, place at the bottom edge
-				newPosition.y = bombBounds.top + bombBounds.height;
-			}
-		}
-
-		// Set the character's position to the new calculated position
-		this->sprite.setPosition(newPosition);
-
-		return true; // Collision detected
-	}
-
-	return false; // No collision detected
-}
-
-
 void Player::initVariable()
 {
-	this->movementSpeed = 2.f;
+	this->movementSpeed = 4.f;
 	this->animationState = PLAYER_ANIMATION_STATES::IDLE;
 	this->previousPosition = this->sprite.getPosition();
+	this->score = 0;
+	this->hpMax = 100;
+	this->hp = this->hpMax;
 }
 
 void Player::initShape()
@@ -70,6 +17,7 @@ void Player::initShape()
 	this->sprite.setTexture(texture);
 	this->currentFrame = sf::IntRect(0, 100, 50, 100);
 	this->sprite.setPosition(100, 100);
+	this->sprite.setScale(1.25f, 1.25f);
 }
 
 void Player::initAnimations()
@@ -79,17 +27,24 @@ void Player::initAnimations()
 
 Player::Player(float x, float y)
 {
+	this->playerName = "";
 	this->sprite.setPosition(x, y);
-	this->spriteHoding.setPosition(x, y);
 	this->initVariable();
 	this->initShape();
 	this->initAnimations();
 	this->animationTimer.restart();
-	this->heartBar = HeartBar(x, y);
 }
+
 
 Player::~Player()
 {
+}
+
+void Player::loseHp(int amount)
+{
+	hp -= amount;
+	if (hp < 0) 
+		hp = 0;
 }
 
 void Player::updateAnimation()
@@ -203,8 +158,8 @@ void Player::updateInput()
 void Player::updateWindowBoundsCollision(const sf::RenderTarget* target)
 {
 	//Left
-	if (this->sprite.getGlobalBounds().left <= 0.f)
-		this->sprite.setPosition(0.f, this->sprite.getGlobalBounds().top);
+	if (this->sprite.getGlobalBounds().left <= 400.f)
+		this->sprite.setPosition(400.f, this->sprite.getGlobalBounds().top);
 	//Right
 	else if (this->sprite.getGlobalBounds().left + this->sprite.getGlobalBounds().width >= target->getSize().x)
 		this->sprite.setPosition(target->getSize().x - this->sprite.getGlobalBounds().width, this->sprite.getGlobalBounds().top);
@@ -226,14 +181,77 @@ void Player::update(const sf::RenderTarget* target)
 	//Window bounds collision
 	this->updateWindowBoundsCollision(target);
 
-	this->heartBar.update(target);
 
 }
 
 void Player::render(sf::RenderTarget* target)
 {
 	target->draw(this->sprite);
-	this->heartBar.render(target);
+}
+
+void Player::takeDamage(int damage) {
+	hp -= damage;
+	if (hp < 0) {
+		hp = 0;
+	}
+}
+
+void Player::addPoints(int points) {
+	score += points;
+	std::cout << "Score: " << score << std::endl;
+}
+
+void Player::subtractPoints(int points) {
+	score -= points;
+	if (score < 0) {
+		score = 0;
+	}
+}
+
+void Player::heal(int amount)
+{
+	hp += amount;
+	if (hp > hpMax) {
+		hp = hpMax; 
+	}
+
+	if (hp <= 0) {
+		std::cout << "Game Over" << std::endl;
+		exit(0); // จบเกม
+	}
+	std::cout << "Hp: " << hp << std::endl;
 }
 
 
+sf::FloatRect Player::getBounds() const
+{
+	return this->sprite.getGlobalBounds();
+}
+
+int Player::getScore() const {
+	return score;
+}
+
+int Player::getHp() const {
+	return hp;
+}
+
+void Player::writeDataToFile()
+{
+	std::ofstream playerDataFile("player_data.txt");
+
+	if (playerDataFile.is_open()) {
+		playerDataFile << "Player Name: " << playerName << "\n";
+		playerDataFile << "Score: " << score << "\n";
+		playerDataFile.close();
+	}
+	else {
+		std::cout << "Unable to open player_data.txt for writing" << std::endl;
+	}
+}
+
+void Player::setPlayerNameAndWriteToFile(const std::string& newName) {
+	playerName = newName;
+	// บันทึกข้อมูลลงในไฟล์
+	writeDataToFile();
+}

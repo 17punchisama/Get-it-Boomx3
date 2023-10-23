@@ -2,7 +2,7 @@
 
 void LogIn::initTexture()
 {
-	if (!backgroundTexture.loadFromFile("images/login-test.png"))
+	if (!backgroundTexture.loadFromFile("images/login-page-ver.png"))
 	{
 		std::cout << "Can't open picture" << std::endl;
 	}
@@ -23,25 +23,25 @@ LogIn::LogIn()
 	this->initSprite();
 
 	this->nextState.setFont(this->font);
-	this->nextState.setFillColor(sf::Color::White);
+	this->nextState.setFillColor(sf::Color::Yellow);
 	this->nextState.setString("NEXT");
 	this->nextState.setPosition(sf::Vector2f(1750, 970));
 	this->nextState.setCharacterSize(50);
 	this->nextState.setOutlineThickness(1);
 
 	this->backState.setFont(this->font);
-	this->backState.setFillColor(sf::Color::White);
+	this->backState.setFillColor(sf::Color::Yellow);
 	this->backState.setString("BACK");
 	this->backState.setPosition(sf::Vector2f(50, 970));
 	this->backState.setCharacterSize(50);
 	this->backState.setOutlineThickness(1);
 
 	this->playerNameText.setFont(this->font);
-	this->playerNameText.setFillColor(sf::Color::Yellow);
+	this->playerNameText.setFillColor(sf::Color::White);
 	this->playerNameText.setString("Enter Player Name");
 	this->playerNameText.setPosition(sf::Vector2f(900, 300));
-	this->playerNameText.setCharacterSize(70);
-	this->playerNameText.setOutlineThickness(1);
+	this->playerNameText.setCharacterSize(60);
+	this->playerNameText.setOutlineThickness(3);
 
     //playerName = "";
 
@@ -49,6 +49,7 @@ LogIn::LogIn()
     {
         keyStates[i] = false;
     }
+
 }
 
 LogIn::~LogIn()
@@ -61,6 +62,9 @@ void LogIn::draw(sf::RenderWindow& window)
 	window.draw(backgroundSprite);
 	window.draw(nextState);
 	window.draw(backState);
+    this->textRect = playerNameText.getLocalBounds();
+    playerNameText.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
+    playerNameText.setPosition(sf::Vector2f(1200, 340));
 	window.draw(playerNameText);
 }
 
@@ -75,7 +79,7 @@ void LogIn::updateMouseInput(sf::RenderWindow& window)
 
         for (int key = sf::Keyboard::A; key <= sf::Keyboard::Z; key++)
         {
-            if (sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Key>(key)))
+            if (sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Key>(key)) && playerName.length()<12)
             {
                 char inputChar = 'a' + (key - sf::Keyboard::A);
 
@@ -90,6 +94,7 @@ void LogIn::updateMouseInput(sf::RenderWindow& window)
                 if (!keyStates[key])
                 {
                     playerName += inputChar;
+   
                     keyPressed = true; // กำหนดให้ keyPressed เป็น true เมื่อมีการกด
                 }
                 keyStates[key] = true;
@@ -131,6 +136,9 @@ void LogIn::updateMouseInput(sf::RenderWindow& window)
                 // Clicked on the name input area, so allow the player to enter their name
                 enteringName = true;
                 playerNameText.setString(""); // Clear the initial "Enter Player Name" text
+                this->textRect = playerNameText.getLocalBounds();
+                playerNameText.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
+                playerNameText.setPosition(sf::Vector2f(900, 300));
             }
         }
     }
@@ -143,6 +151,7 @@ void LogIn::updateMouseInput(sf::RenderWindow& window)
     else
     {
         playerNameText.setString(playerName);
+        //std::cout << playerName << std::endl;
     }
 
     if (nextState.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosition)))
@@ -152,6 +161,18 @@ void LogIn::updateMouseInput(sf::RenderWindow& window)
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
             this->checkState = "next";
+            std::ofstream playDataFile("player_data.txt");
+            if (playDataFile.is_open())
+            {
+                // เขียนชื่อผู้เล่นลงในไฟล์
+                playDataFile << playerName;
+                playDataFile.close();
+            }
+            else
+            {
+                std::cout << "Unable to open player_data.txt for writing" << std::endl;
+            }
+
         }
     }
     else
@@ -168,4 +189,9 @@ void LogIn::updateMouseInput(sf::RenderWindow& window)
     }
     else
         this->backState.setFillColor(sf::Color::White);
+}
+
+std::string LogIn::playerNameOutput()
+{
+    return playerName;
 }

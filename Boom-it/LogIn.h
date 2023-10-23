@@ -4,6 +4,7 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <fstream>
 
 class LogIn
 {
@@ -19,17 +20,16 @@ private:
 
 	int delayMilliseconds = 100;
 	
-	std::string playerName;
-	
 
 	sf::Texture backgroundTexture;
 	sf::Sprite backgroundSprite;
 
 	sf::Vector2i mousePosition;
 
+
 	void initTexture();
 	void initSprite();
-	void handleMouseClick();
+	sf::FloatRect textRect;
 	
 public:
 	LogIn();
@@ -38,5 +38,10 @@ public:
 	void draw(sf::RenderWindow& window);
 	void updateMouseInput(sf::RenderWindow& window);
 	std::string checkState;
+	std::string playerName;
+	std::string playerNameOutput();
+
+	void loadPlayerData();
+
 };
 

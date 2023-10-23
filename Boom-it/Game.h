@@ -5,12 +5,14 @@
 #include <vector>
 #include <iostream>
 #include "Player.h"
-#include "Bomb.h"
-#include "HeartBar.h"
 #include "MainMenu.h"
 #include "LogIn.h"
 #include "About.h"
 #include "Scoreboard.h"
+#include "Item.h"
+#include "Enemy.h"
+#include "Item.h"
+#include "PlayerData.h"
 
 enum class GameState {
     MainMenu,
@@ -18,6 +20,7 @@ enum class GameState {
     Playing,
     Scoreboard,
     About,
+    GameOver,
 };
 
 
@@ -26,29 +29,74 @@ class Game
 private:
     sf::RenderWindow window;
     sf::View statusView;
+
     bool endGame;
     bool canPlaceBomb;
     bool isBombExploded;
+
+    unsigned points;
+    int type;
+
+    sf::Font font;
+    sf::Text scoreText;
+    sf::Text hpText;
+    sf::Text nameText;
+    sf::Text text;
+
+    std::string playerNameIn = "";
+
+    //Items
+    float spawnTimerMaxCherries;
+    float spawnTimerCherries = 0;
+
+    float spawnTimerMaxHeart;
+    float spawnTimerHeart = 0;
+
+    float spawnTimerMaxPoison;
+    float spawnTimerPoison = 0;
+
+    float spawnTimer;
+    float spawnTimerMax;
+
+    bool itemSpawn = false;
+
+    std::vector<Item*> items;
+
+    std::vector<Enemy*> enemies;
+
+    std::vector<PlayerData> players;
+
+    sf::Clock clock;
+    sf::Clock heartTime;
+    sf::Clock poisonTime;
+
+    sf::Clock itemSpawnTimer;
     sf::Event sfmlEvent;
     sf::Texture explosionTexture;
     sf::Sprite explosionSprite;
     sf::Texture texture;
     sf::Sprite sprite;
 
-    std::vector<Bomb> bombs;
-
     Player player;
-    HeartBar heartBar;
+
     MainMenu mainMenu;
     GameState gameState;
     LogIn login;
     About about;
     Scoreboard scoreboard;
 
+    //Item item;
+
     sf::Music menuMusic;
+    
+    void initEnemies();
+    void initItems();
+
     void initVariables();
     void initWindow();
     void initTextures();
+    
+    void initText();
 
     void updateMainMenu();
     void updatePlaying();
@@ -64,6 +112,8 @@ private:
 
     int selectedItemIndex;
     std::string clickedMenuState;
+
+
 
 public:
     Game();

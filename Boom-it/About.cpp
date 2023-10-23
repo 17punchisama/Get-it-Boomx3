@@ -27,8 +27,8 @@ About::About()
 	this->Text.setString("Back To Home");
 
 	this->headline.setFont(this->headlineFont);
-	this->headline.setFillColor(sf::Color::White);
-	this->headline.setPosition(sf::Vector2f(750, 20));
+	this->headline.setFillColor(sf::Color::Magenta);
+	this->headline.setPosition(sf::Vector2f(730, 20));
 	this->headline.setCharacterSize(150);
 	this->headline.setOutlineThickness(1.5);
 	this->headline.setString("About Me");
