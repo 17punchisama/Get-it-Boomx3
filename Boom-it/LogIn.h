@@ -13,6 +13,7 @@ private:
 	sf::Text nextState;
 	sf::Text backState;
 	sf::Text playerNameText;
+	sf::Text nameText;
 
 	bool enteringName;
 	bool keyStates[26];
@@ -42,6 +43,6 @@ public:
 	std::string playerNameOutput();
 
 	void loadPlayerData();
-
+	void renderName(sf::RenderWindow& window);
 };
 

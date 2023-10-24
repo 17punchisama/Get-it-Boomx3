@@ -10,7 +10,7 @@ void Game::initVariables()
     this->endGame = false;
     this->gameState = GameState::MainMenu;
 
-    this->spawnTimerMax = 20.f;
+    this->spawnTimerMax = 40.f;
     //this->playerNameIn = "";
 }
 
@@ -26,6 +26,15 @@ void Game::initWindow()
 
     mainMenu.initTexture();
     mainMenu.initSprite();
+
+    if (!menuMusic.openFromFile("sounds/odd-front.mp3"))
+    {
+        std::cout << "Failed to load music" << std::endl;
+    }
+
+    menuMusic.setLoop(true);
+    menuMusic.setVolume(30);
+    menuMusic.play();
 }
 
 void Game::initTextures()
@@ -37,44 +46,23 @@ void Game::initText()
 {
     font.loadFromFile("fonts/VCR_OSD_MONO_1.001.ttf");
     scoreText.setFont(font);
-    scoreText.setCharacterSize(50);
+    scoreText.setCharacterSize(40);
     scoreText.setFillColor(sf::Color::Black);
-    scoreText.setPosition(50, 450);  // ตำแหน่ง X, Y ของคะแนนบนหน้าต่าง
+    scoreText.setPosition(50, 500);  // ตำแหน่ง X, Y ของคะแนนบนหน้าต่าง
     //scoreText.setString("Score: " + std::to_string(player.getScore()));
 
     hpText.setFont(font);
-    hpText.setCharacterSize(50);
+    hpText.setCharacterSize(40);
     hpText.setFillColor(sf::Color::Black);
-    hpText.setPosition(50, 500);  // ตำแหน่ง X, Y ของคะแนนบนหน้าต่าง
+    hpText.setPosition(50, 550);  // ตำแหน่ง X, Y ของคะแนนบนหน้าต่าง
     //hpText.setString("Hp: " + std::to_string(player.getHp()));
-
-  
-    nameText.setFont(font);
-    nameText.setCharacterSize(50);
-    nameText.setFillColor(sf::Color::Magenta);
-    nameText.setPosition(50, 400);
-    nameText.setOutlineThickness(1.5);
-
-    // อ่านชื่อผู้เล่นจากไฟล์ player_data.txt
-    std::ifstream playDataFile("player_data.txt");
-    if (playDataFile.is_open())
-    {
-        std::getline(playDataFile, playerNameIn);
-        playDataFile.close();
-    }
-    else
-    {
-        std::cout << "Unable to open player_data.txt for reading" << std::endl;
-    }
-
-    nameText.setString(playerNameIn); 
 
 
     text.setFont(font);
     text.setCharacterSize(30);
     text.setFillColor(sf::Color::Yellow);
     text.setPosition(50, 350);
-    text.setString("NAME" );
+    text.setString("PLAYER NAME" );
     text.setOutlineThickness(1.5);
 
     std::cout << "Player Name: " << playerNameIn << std::endl;
@@ -90,16 +78,34 @@ Game::Game()
 {
     this->initVariables();
     this->initWindow();
-    if (!menuMusic.openFromFile("sounds/odd-front.mp3"))
-    {
+ 
+    if (!collisionBuffer.loadFromFile("sounds/Hurt.wav")) {
         std::cout << "Failed to load music" << std::endl;
     }
+    this->collisionSound.setBuffer(collisionBuffer);
+
+    if (!completeBuffer.loadFromFile("sounds/Confirm.wav")) {
+        std::cout << "Failed to load music" << std::endl;
+    }
+    this->completeSound.setBuffer(completeBuffer);
+
+    if (!clickBuffer.loadFromFile("sounds/Click.wav")) {
+        std::cout << "Failed to load music" << std::endl;
+    }
+    this->clickSound.setBuffer(clickBuffer);
+
+    if (!cancelBuffer.loadFromFile("sounds/Cancel.wav")) {
+        std::cout << "Failed to load music" << std::endl;
+    }
+    this->cancelSound.setBuffer(cancelBuffer);
+
     clock.restart();
     heartTime.restart();
     poisonTime.restart();
     itemSpawnTimer.restart();
 
     this->initText();
+    //this->login.renderName(window);
 
     this->spawnTimerMaxCherries = .5f; // Initial maximum time for Cherries
     this->spawnTimerCherries = this->spawnTimerMaxCherries;
@@ -154,7 +160,7 @@ void Game::initEnemies()
         this->spawnTimer = 0.f;
 
         // เพิ่มความยากของเกม 
-        this->spawnTimerMax -= 0.1f; // ลดเวลาเกิดศัตรูลง 1 เฟรม
+        this->spawnTimerMax -= 0.01f; // ลดเวลาเกิดศัตรูลง 1 เฟรม
         if (this->spawnTimerMax < 10.f) // ลองปรับค่าตามความเหมาะสม
         {
             this->spawnTimerMax = 10.f; // ไม่ให้ลดเวลาเกิดศัตรูเรื่อย ๆ มากเกินไป
@@ -209,17 +215,20 @@ void Game::updateMainMenu()
 
     if (clickedMenuState == "Playing")
     {
+        clickSound.play();
         //std::cout << "Playing rendering" << std::endl;
         gameState = GameState::LogIn;
         mainMenu.menuState = "";
     }
     if (clickedMenuState == "Scoreboard")
     {
+        clickSound.play();
         gameState = GameState::Scoreboard;
         mainMenu.menuState = "";
     }
     if (clickedMenuState == "About")
     {
+        clickSound.play();
         gameState = GameState::About;
         mainMenu.menuState = "";
     }
@@ -291,6 +300,8 @@ void Game::updatePlaying()
     window.draw(text);
     window.draw(nameText);
 
+    login.renderName(window);
+
     this->initEnemies();
 
     window.display();
@@ -303,12 +314,14 @@ void Game::updateLogIn()
 
     if (login.checkState == "next")
     {
+        clickSound.play();
         gameState = GameState::Playing;
         playerNameIn = login.playerName;
         login.checkState = "";
     }
     if (login.checkState == "back")
     {
+        clickSound.play();
         gameState = GameState::MainMenu;
         login.checkState = "";
     }
@@ -323,6 +336,7 @@ void Game::updateAbout()
 
     if (about.checkState == "Home")
     {
+        clickSound.play();
         gameState = GameState::MainMenu;
         about.checkState = "";
         mainMenu.menuState = "";
@@ -338,9 +352,26 @@ void Game::updateScoreboard()
 
     if (scoreboard.checkState == "Home")
     {
+        clickSound.play();
         gameState = GameState::MainMenu;
+        scoreboard.checkState = "";
     }
     scoreboard.draw(window);
+    window.display();
+}
+
+void Game::updateGameOver()
+{
+    gameOver.updateMouseInput(window);
+
+    if (gameOver.checkState == "Home")
+    {
+        clickSound.play();
+        gameState = GameState::MainMenu;
+        gameOver.checkState = "";
+    }
+
+    gameOver.draw(window);
     window.display();
 }
 
@@ -382,21 +413,13 @@ void Game::update()
         this->updateScoreboard();
     }
     
-    if (gameState == GameState::About || gameState == GameState::Scoreboard || gameState == GameState::MainMenu || gameState == GameState::LogIn)
+    if (gameState == GameState::GameOver)
     {
-        this->menuMusic.play();
-    }
-    else
-    {
-        this->menuMusic.stop();
+        this->updateGameOver();
     }
 
 
-    if (!running())
-    {
-        playerNameIn = ""; // รีเซ็ตค่าชื่อผู้เล่นใหม่
-        changeGameState(GameState::LogIn); // เปิดหน้า LogIn อีกครั้ง
-    }
+
 }
 
 void Game::renderMainMenu()
@@ -416,6 +439,7 @@ void Game::renderPlaying()
     for (size_t i = 0; i < enemies.size(); ++i) {
         if (player.getBounds().intersects(enemies[i]->getBounds())) {
             // ทำตามความเสียหายของศัตรู
+            collisionSound.play();
             player.takeDamage(enemies[i]->getDamage());
 
             // ลบศัตรูที่ชน
@@ -429,15 +453,18 @@ void Game::renderPlaying()
         if (player.getBounds().intersects(items[i]->getBounds())) {
             ItemType itemType = items[i]->getType();
             if (itemType == ItemType::Cherry) {
+                completeSound.play();
                 // ทำตามการชนของ cherry
                 player.addPoints(10);
             }
             else if (itemType == ItemType::Heart) {
                 // ทำตามการชนของ heart
+                completeSound.play();
                 player.heal(10);
             }
             else if (itemType == ItemType::Poison) {
                 // ทำตามการชนของ poison
+                cancelSound.play();
                 player.subtractPoints(50);
             }
 
@@ -450,7 +477,16 @@ void Game::renderPlaying()
     if (player.getHp() <= 0) {
         std::cout << "Game Over" << std::endl;
         gameState = GameState::GameOver; 
-        player.writeDataToFile();
+        
+        std::ofstream scoreFile("scores.txt", std::ios::app); // ใช้ std::ios::app เพื่อแต่ละครั้งที่เขียนจะไม่ลบข้อมูลเก่า
+        if (scoreFile.is_open()) {
+            scoreFile << login.playerName << " " << player.getScore() << std::endl;
+            scoreFile.close();
+        }
+        else {
+            std::cerr << "ไม่สามารถเปิดไฟล์ scores.txt ได้" << std::endl;
+        }
+        this->resetGame();
     }
 
     scoreText.setString("Score: " + std::to_string(player.getScore()));
@@ -460,6 +496,8 @@ void Game::renderPlaying()
     window.draw(hpText);
     window.draw(text);
     window.draw(nameText);
+    login.renderName(window);
+    
 
     for (Enemy* enemy : this->enemies) {
         enemy->render(&window);
@@ -491,6 +529,24 @@ void Game::renderScoreboard()
     window.display();
 }
 
+void Game::renderGameOver()
+{
+    gameOver.draw(window);
+    window.display();
+}
+
+void Game::resetGame()
+{
+    player.reset(); 
+    enemies.clear();
+    items.clear();
+    login.playerName = "";
+    playerNameIn = "";
+    //this->initVariables();
+    clickedMenuState = "";
+    menuMusic.play();
+}
+
 void Game::render()
 {
 
@@ -504,6 +560,7 @@ void Game::render()
     else if (gameState == GameState::Playing)
     {
         this->renderPlaying();
+        
     }
     else if (gameState == GameState::LogIn)
     {
@@ -516,6 +573,10 @@ void Game::render()
     else if (gameState == GameState::Scoreboard)
     {
         this->renderScoreboard();
+    }
+    else if (gameState == GameState::GameOver)
+    {
+        this->renderGameOver();
     }
     // Check the game state and choose the appropriate rendering function
 

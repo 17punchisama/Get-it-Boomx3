@@ -72,4 +72,5 @@ public:
 
 	void writeDataToFile();
 	void setPlayerNameAndWriteToFile(const std::string& newName);
+	void reset();
 };

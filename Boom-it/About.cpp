@@ -21,7 +21,7 @@ About::About()
 
 	this->Text.setFont(this->font);
 	this->Text.setFillColor(sf::Color::White);
-	this->Text.setPosition(sf::Vector2f(800, 950));
+	this->Text.setPosition(sf::Vector2f(800, 970));
 	this->Text.setCharacterSize(50);
 	this->Text.setOutlineThickness(1.5);
 	this->Text.setString("Back To Home");

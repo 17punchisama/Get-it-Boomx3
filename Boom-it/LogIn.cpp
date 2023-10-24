@@ -62,6 +62,7 @@ void LogIn::draw(sf::RenderWindow& window)
 	window.draw(backgroundSprite);
 	window.draw(nextState);
 	window.draw(backState);
+    //window.draw(nameText);
     this->textRect = playerNameText.getLocalBounds();
     playerNameText.setOrigin(textRect.left + textRect.width / 2, textRect.top + textRect.height / 2);
     playerNameText.setPosition(sf::Vector2f(1200, 340));
@@ -194,4 +195,17 @@ void LogIn::updateMouseInput(sf::RenderWindow& window)
 std::string LogIn::playerNameOutput()
 {
     return playerName;
+}
+
+void LogIn::renderName(sf::RenderWindow& window)
+{
+    nameText.setFont(font);
+    nameText.setCharacterSize(40);
+    nameText.setFillColor(sf::Color::Magenta);
+    nameText.setPosition(50, 400);
+    nameText.setOutlineThickness(1.5);
+
+    nameText.setString(playerName);
+
+    window.draw(nameText);
 }

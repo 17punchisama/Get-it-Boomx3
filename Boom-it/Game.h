@@ -13,6 +13,7 @@
 #include "Enemy.h"
 #include "Item.h"
 #include "PlayerData.h"
+#include "GameOver.h"
 
 enum class GameState {
     MainMenu,
@@ -42,6 +43,19 @@ private:
     sf::Text hpText;
     sf::Text nameText;
     sf::Text text;
+
+    sf::SoundBuffer collisionBuffer;
+    sf::Sound collisionSound;
+    
+    sf::SoundBuffer clickBuffer;
+    sf::Sound clickSound;
+
+    sf::SoundBuffer completeBuffer;
+    sf::Sound completeSound;
+
+    sf::SoundBuffer cancelBuffer;
+    sf::Sound cancelSound;
+
 
     std::string playerNameIn = "";
 
@@ -84,6 +98,7 @@ private:
     LogIn login;
     About about;
     Scoreboard scoreboard;
+    GameOver gameOver;
 
     //Item item;
 
@@ -103,13 +118,16 @@ private:
     void updateLogIn();
     void updateAbout();
     void updateScoreboard();
+    void updateGameOver();
 
     void renderMainMenu();
     void renderPlaying();
     void renderLogIn();
     void renderAbout();
     void renderScoreboard();
+    void renderGameOver();
 
+    void resetGame();
     int selectedItemIndex;
     std::string clickedMenuState;
 

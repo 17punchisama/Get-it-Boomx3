@@ -16,7 +16,7 @@ void Player::initShape()
 	this->texture.loadFromFile("images/Player-Choerry.png");
 	this->sprite.setTexture(texture);
 	this->currentFrame = sf::IntRect(0, 100, 50, 100);
-	this->sprite.setPosition(100, 100);
+	this->sprite.setPosition(400, 100);
 	this->sprite.setScale(1.25f, 1.25f);
 }
 
@@ -254,4 +254,12 @@ void Player::setPlayerNameAndWriteToFile(const std::string& newName) {
 	playerName = newName;
 	// บันทึกข้อมูลลงในไฟล์
 	writeDataToFile();
+}
+
+void Player::reset()
+{
+	this->hp = 100;
+	this->score = 0;
+	this->sprite.setPosition(400.0f, 100.0f);
+	this->currentFrame = sf::IntRect(0, 100, 50, 100);
 }

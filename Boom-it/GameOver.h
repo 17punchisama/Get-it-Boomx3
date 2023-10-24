@@ -1,27 +1,23 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <iostream>
-#include <fstream>
 
-class Scoreboard
+class GameOver
+
 {
 private:
-	//sf::RenderWindow& window;
 	sf::Text backText;
 	sf::Font font;
-	sf::Text topPlayersText[5];
 
 	sf::Texture texture;
 	sf::Sprite sprite;
 	sf::Vector2i mousePosition;
 
 public:
-	Scoreboard();
-	//~Scoreboard();
-
+	GameOver();
 	void draw(sf::RenderWindow& window);
 	void updateMouseInput(sf::RenderWindow& window);
 	std::string checkState;
-	void loadTopPlayers();
+
 };
+
