@@ -43,21 +43,21 @@ void Scoreboard::loadTopPlayers() {
         });
 
     // Set the top 5 players' names and scores
-    std::string topPlayersString = "Top 5 Players:\n"; 
+    std::string topPlayersString = "Top 5 Players:\n";
     for (size_t i = 0; i < 5 && i < scores.size(); ++i) {
         topPlayersText[i].setFont(font);
         topPlayersText[i].setCharacterSize(80);
         topPlayersText[i].setFillColor(sf::Color::White);
-        topPlayersText[i].setString(scores[i].first + + "  " + "Score " + std::to_string(scores[i].second));
+        topPlayersText[i].setString(scores[i].first + +"  " + "Score " + std::to_string(scores[i].second));
         topPlayersText[i].setOutlineThickness(2);
 
         sf::FloatRect textBounds = topPlayersText[i].getLocalBounds();
         float centerX = (1920 - textBounds.width) / 2;
-        float centerY = 300 + i * 100; // Adjust the position as needed
+        float centerY = 350 + i * 100; // Adjust the position as needed
         topPlayersText[i].setPosition(centerX, centerY);
     }
-
 }
+
 
 
 void Scoreboard::draw(sf::RenderWindow& window) {

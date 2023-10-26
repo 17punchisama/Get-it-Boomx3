@@ -12,10 +12,10 @@ private:
 	sf::Font font;
 	sf::Text nextState;
 	sf::Text backState;
-	sf::Text playerNameText;
+	
 	sf::Text nameText;
 
-	bool enteringName;
+	
 	bool keyStates[26];
 	bool backspacePressed;
 
@@ -36,7 +36,10 @@ public:
 	LogIn();
 	~LogIn();
 
+	sf::Text playerNameText;
+
 	void draw(sf::RenderWindow& window);
+	bool enteringName;
 	void updateMouseInput(sf::RenderWindow& window);
 	std::string checkState;
 	std::string playerName;

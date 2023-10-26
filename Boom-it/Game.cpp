@@ -10,7 +10,7 @@ void Game::initVariables()
     this->endGame = false;
     this->gameState = GameState::MainMenu;
 
-    this->spawnTimerMax = 40.f;
+    this->spawnTimerMax = 50.f;
     //this->playerNameIn = "";
 }
 
@@ -107,7 +107,7 @@ Game::Game()
     this->initText();
     //this->login.renderName(window);
 
-    this->spawnTimerMaxCherries = .5f; // Initial maximum time for Cherries
+    this->spawnTimerMaxCherries = 1.0f; // Initial maximum time for Cherries
     this->spawnTimerCherries = this->spawnTimerMaxCherries;
 
     this->spawnTimerMaxHeart = 5.0f; // Initial maximum time for Hearts
@@ -160,7 +160,7 @@ void Game::initEnemies()
         this->spawnTimer = 0.f;
 
         // เพิ่มความยากของเกม 
-        this->spawnTimerMax -= 0.01f; // ลดเวลาเกิดศัตรูลง 1 เฟรม
+        this->spawnTimerMax -= 0.05f; // ลดเวลาเกิดศัตรูลง 1 เฟรม
         if (this->spawnTimerMax < 10.f) // ลองปรับค่าตามความเหมาะสม
         {
             this->spawnTimerMax = 10.f; // ไม่ให้ลดเวลาเกิดศัตรูเรื่อย ๆ มากเกินไป
@@ -218,6 +218,7 @@ void Game::updateMainMenu()
         clickSound.play();
         //std::cout << "Playing rendering" << std::endl;
         gameState = GameState::LogIn;
+        
         mainMenu.menuState = "";
     }
     if (clickedMenuState == "Scoreboard")
@@ -542,6 +543,8 @@ void Game::resetGame()
     items.clear();
     login.playerName = "";
     playerNameIn = "";
+    login.enteringName = false;
+    login.playerNameText.setString("Enter Player Name");
     //this->initVariables();
     clickedMenuState = "";
     menuMusic.play();
