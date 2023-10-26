@@ -485,7 +485,7 @@ void Game::renderPlaying()
             scoreFile.close();
         }
         else {
-            std::cerr << "ไม่สามารถเปิดไฟล์ scores.txt ได้" << std::endl;
+            std::cerr << "can't open scores.txt" << std::endl;
         }
         this->resetGame();
     }
