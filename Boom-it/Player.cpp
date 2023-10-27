@@ -167,7 +167,7 @@ void Player::updateWindowBoundsCollision(const sf::RenderTarget* target)
 	if (this->sprite.getGlobalBounds().top <= 0.f)
 		this->sprite.setPosition(this->sprite.getGlobalBounds().left, 0.f);
 	//Bottom
-	else if (this->sprite.getGlobalBounds().top + this->sprite.getGlobalBounds().height >= target->getSize().y)
+	else if (this->sprite.getGlobalBounds().top + this->sprite.getGlobalBounds().height >= 1080)
 		this->sprite.setPosition(this->sprite.getGlobalBounds().left, target->getSize().y - this->sprite.getGlobalBounds().height);
 }
 
