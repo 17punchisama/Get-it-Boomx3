@@ -65,7 +65,7 @@ void Game::initText()
     text.setString("PLAYER NAME" );
     text.setOutlineThickness(1.5);
 
-    std::cout << "Player Name: " << playerNameIn << std::endl;
+    //std::cout << "Player Name: " << playerNameIn << std::endl;
 
 }
 
@@ -267,7 +267,7 @@ void Game::updatePlaying()
         for (Item* item : this->items) {
             if (item->getType() == ItemType::Heart) {
                 sf::Vector2f heartPosition = item->getPosition();
-                std::cout << "Heart position: x=" << heartPosition.x << ", y=" << heartPosition.y << std::endl;
+                //std::cout << "Heart position: x=" << heartPosition.x << ", y=" << heartPosition.y << std::endl;
             }
         }
         // Spawn a Heart

@@ -167,7 +167,7 @@ void Player::updateWindowBoundsCollision(const sf::RenderTarget* target)
 	if (this->sprite.getGlobalBounds().top <= 0.f)
 		this->sprite.setPosition(this->sprite.getGlobalBounds().left, 0.f);
 	//Bottom
-	else if (this->sprite.getGlobalBounds().top + this->sprite.getGlobalBounds().height >= 1080)
+	else if (this->sprite.getGlobalBounds().top + this->sprite.getGlobalBounds().height >= target->getSize().y)
 		this->sprite.setPosition(this->sprite.getGlobalBounds().left, target->getSize().y - this->sprite.getGlobalBounds().height);
 }
 
@@ -198,7 +198,7 @@ void Player::takeDamage(int damage) {
 
 void Player::addPoints(int points) {
 	score += points;
-	std::cout << "Score: " << score << std::endl;
+	//std::cout << "Score: " << score << std::endl;
 }
 
 void Player::subtractPoints(int points) {
@@ -219,7 +219,7 @@ void Player::heal(int amount)
 		std::cout << "Game Over" << std::endl;
 		exit(0); // จบเกม
 	}
-	std::cout << "Hp: " << hp << std::endl;
+	//std::cout << "Hp: " << hp << std::endl;
 }
 
 

@@ -110,15 +110,15 @@ void MainMenu::handleMouseClick(int selectedItemIndex)
 	{
 	case 0:
 		this->menuState = "Playing";
-		std::cout << "Start Click" << std::endl;
+		//std::cout << "Start Click" << std::endl;
 		break;
 	case 1:
 		this->menuState = "Scoreboard";
-		std::cout << "Scoreboard Click" << std::endl;
+		//std::cout << "Scoreboard Click" << std::endl;
 		break;
 	case 2:
 		this->menuState = "About";
-		std::cout << "About Click" << std::endl;
+		//std::cout << "About Click" << std::endl;
 		break;
 	default:
 		break;
